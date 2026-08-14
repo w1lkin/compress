@@ -1,6 +1,6 @@
 use crate::error::AppResult;
 use crate::stats::CompressionResult;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Arc, OnceLock};
@@ -15,7 +15,7 @@ pub struct Preset {
     pub rasterize: bool,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CompressOptions {
     pub rasterize_text_layer: bool,
     pub output_dir: String,
