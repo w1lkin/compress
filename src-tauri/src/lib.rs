@@ -1,3 +1,4 @@
+mod detect;
 mod error;
 mod stats;
 
