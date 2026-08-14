@@ -1,5 +1,5 @@
 mod detect;
-mod engine;
+pub mod engine;
 mod error;
 mod stats;
 mod task;
