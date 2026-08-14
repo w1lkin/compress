@@ -1,4 +1,5 @@
 mod detect;
+mod engine;
 mod error;
 mod stats;
 
