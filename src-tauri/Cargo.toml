@@ -1,0 +1,18 @@
+[package]
+name = "pdf-compressor"
+version = "0.1.0"
+description = "轻量 PDF 压缩工具"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+
+[lib]
+name = "pdf_compressor_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
