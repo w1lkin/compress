@@ -84,7 +84,7 @@ rustc -V   # 期望 >= 1.77
 
 ```json
 {
-  "name": "pdf-compressor",
+  "name": "compress",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -129,7 +129,7 @@ export default defineConfig({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDF 压缩器</title>
+    <title>压缩器</title>
   </head>
   <body>
     <div id="app"></div>
@@ -164,7 +164,7 @@ export default defineConfig({
 
 ```toml
 [package]
-name = "pdf-compressor"
+name = "compress"
 version = "0.1.0"
 description = "轻量 PDF 压缩工具"
 edition = "2021"
@@ -192,7 +192,7 @@ fn main() {
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    pdf_compressor_lib::run()
+    compress_lib::run()
 }
 ```
 
@@ -213,7 +213,7 @@ pub fn run() {
 
 ```toml
 [lib]
-name = "pdf_compressor_lib"
+name = "compress_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 ```
 
@@ -222,9 +222,9 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 ```json
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "PDF压缩器",
+  "productName": "压缩器",
   "version": "0.1.0",
-  "identifier": "com.example.pdf-compressor",
+  "identifier": "com.example.compress",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -234,7 +234,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
   "app": {
     "windows": [
       {
-        "title": "PDF 压缩器",
+        "title": "压缩器",
         "width": 900,
         "height": 640
       }
@@ -271,7 +271,7 @@ createApp(App).mount("#app");
 ```vue
 <template>
   <div class="container">
-    <h1>PDF 压缩器</h1>
+    <h1>压缩器</h1>
   </div>
 </template>
 
@@ -289,7 +289,7 @@ mkdir -p src-tauri/icons
 npm run tauri dev
 ```
 
-期望：弹出标题为「PDF 压缩器」的窗口，显示标题文字。
+期望：弹出标题为「压缩器」的窗口，显示标题文字。
 
 - [ ] **Step 6: Commit**
 
@@ -1219,7 +1219,7 @@ async function start() {
 <template>
   <div class="container">
     <header>
-      <h1>PDF 压缩器</h1>
+      <h1>压缩器</h1>
       <span class="gs">{{ gsMsg }}</span>
     </header>
 
@@ -1303,8 +1303,8 @@ git add -A && git commit -m "feat: implement compression UI"
 创建 `src-tauri/tests/compress_test.rs`：
 
 ```rust
-use pdf_compressor_lib::engine::pdf::PdfEngine;
-use pdf_compressor_lib::engine::{CompressOptions, CompressionEngine};
+use compress_lib::engine::pdf::PdfEngine;
+use compress_lib::engine::{CompressOptions, CompressionEngine};
 use std::path::Path;
 
 fn sample_pdf() -> std::path::PathBuf {
