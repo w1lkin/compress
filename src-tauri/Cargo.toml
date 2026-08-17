@@ -15,5 +15,5 @@ serde_json = "1"
 thiserror = "1"
 
 [lib]
-name = "pdf_compressor_lib"
+name = "compress_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]

@@ -1,5 +1,5 @@
-use pdf_compressor_lib::engine::pdf::PdfEngine;
-use pdf_compressor_lib::engine::{CompressOptions, CompressionEngine};
+use compress_lib::engine::pdf::PdfEngine;
+use compress_lib::engine::{CompressOptions, CompressionEngine};
 use std::path::Path;
 
 fn sample_pdf() -> std::path::PathBuf {
