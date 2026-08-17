@@ -7,7 +7,7 @@ pub struct PdfInfo {
     pub file_size: u64,
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct CompressionResult {
     pub input_path: String,
     pub output_path: String,

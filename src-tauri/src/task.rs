@@ -1,10 +1,12 @@
 use crate::detect::{detect_ghostscript, GhostscriptInfo};
 use crate::engine::{engine_for, CompressOptions, Preset};
 use crate::stats::CompressionResult;
+use serde::Serialize;
 use std::path::Path;
+use tauri::Emitter;
 
 /// 单个文件的压缩结果（成功或失败均返回，失败携带错误消息）
-#[derive(serde::Serialize)]
+#[derive(Clone, Serialize)]
 pub struct FileResult {
     pub success: bool,
     #[serde(flatten)]
@@ -12,14 +14,45 @@ pub struct FileResult {
     pub error: Option<String>,
 }
 
+/// 压缩进度事件负载
+#[derive(Clone, Serialize)]
+pub struct ProgressPayload {
+    /// 当前处理到第几个（从 1 开始）
+    pub current: usize,
+    /// 总文件数
+    pub total: usize,
+    /// 当前文件名
+    pub file: String,
+    /// 当前文件是否已完成（true = 刚完成一个）
+    pub done: bool,
+}
+
 pub fn compress_all(
     paths: Vec<String>,
     preset_id: String,
     opts: CompressOptions,
+    on_progress: impl Fn(ProgressPayload),
 ) -> Vec<FileResult> {
+    let total = paths.len();
     paths
         .iter()
-        .map(|p| compress_one(Path::new(p), &preset_id, &opts))
+        .enumerate()
+        .map(|(i, p)| {
+            on_progress(ProgressPayload {
+                current: i + 1,
+                total,
+                file: p.clone(),
+                done: false,
+            });
+            let r = compress_one(Path::new(p), &preset_id, &opts);
+            on_progress(ProgressPayload {
+                current: i + 1,
+                total,
+                file: p.clone(),
+                done: true,
+            });
+            r
+        })
         .collect()
 }
 
@@ -88,10 +121,19 @@ pub fn list_presets(ext: String) -> Vec<Preset> {
 }
 
 #[tauri::command]
-pub fn compress_files(
+pub async fn compress_files(
+    app: tauri::AppHandle,
     paths: Vec<String>,
     preset_id: String,
     opts: CompressOptions,
 ) -> Vec<FileResult> {
-    compress_all(paths, preset_id, opts)
+    let app_handle = app.clone();
+    let results = tauri::async_runtime::spawn_blocking(move || {
+        compress_all(paths, preset_id, opts, move |p| {
+            let _ = app_handle.emit("compress-progress", p);
+        })
+    })
+    .await
+    .unwrap_or_default();
+    results
 }
