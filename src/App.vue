@@ -69,7 +69,7 @@ async function start() {
 <template>
   <div class="container">
     <header>
-      <h1>PDF 压缩器</h1>
+      <h1>压缩器</h1>
       <span class="gs">{{ gsMsg }}</span>
     </header>
 
